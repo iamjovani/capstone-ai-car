@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(NNet))]
 public class CarController : MonoBehaviour
@@ -19,9 +20,14 @@ public class CarController : MonoBehaviour
     public float avgSpeedMultiplier = 0.2f;
     public float sensorMultiplier = 0.1f;
 
+
+    [Header("Generation Count")]
+    public int generationCount = 0;
+    public Text genText;
+
     [Header("Network Options")]
-    public int LAYERS = 1;
-    public int NEURONS = 10;
+    public int LAYERS = 3;
+    public int NEURONS = 30;
 
     private Vector3 lastPosition;
     private float totalDistanceTravelled;
@@ -32,6 +38,7 @@ public class CarController : MonoBehaviour
     private void Awake() {
         startPosition = transform.position;
         startRotation = transform.eulerAngles;
+        genText.text = generationCount.ToString("0");
         network = GetComponent<NNet>();
 
         
@@ -53,6 +60,7 @@ public class CarController : MonoBehaviour
         lastPosition = startPosition;
         overallFitness = 0f;
         transform.position = startPosition;
+        generationCount += 1; // add value to  TextUI 
         transform.eulerAngles = startRotation;
     }
 
@@ -141,5 +149,11 @@ public class CarController : MonoBehaviour
 
         transform.eulerAngles += new Vector3(0, (h*90)*0.02f,0);
     }
+
+    public int genCount()
+    {
+        return generationCount;
+    }
+
 
 }
