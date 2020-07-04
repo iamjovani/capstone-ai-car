@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+using System;
+using System.IO;
+using System.Text;
+
 [RequireComponent(typeof(NNet))]
 public class CarController : MonoBehaviour
 {
@@ -35,11 +40,21 @@ public class CarController : MonoBehaviour
 
     private float aSensor,bSensor,cSensor;
 
+    public StringBuilder csv = new StringBuilder();
+
+    public static int i = 0;
+
+
     private void Awake() {
         startPosition = transform.position;
         startRotation = transform.eulerAngles;
         genText.text = generationCount.ToString("0");
         network = GetComponent<NNet>();
+
+
+
+        //training Data
+        //(a, t) = network.RunNetwork(aSensor, bSensor, cSensor);
 
         
     }
@@ -76,8 +91,16 @@ public class CarController : MonoBehaviour
 
         (a, t) = network.RunNetwork(aSensor, bSensor, cSensor);
 
+       // float[] xy = readData();
+//
+       // if (xy[0] != 0 && xy[1] != 0)
+       // {
+       //     a = xy[0];
+       //     t = xy[1];
+       // }
+      
 
-        MoveCar(a,t);
+        MoveCar(a,t, timeSinceStart);
 
         timeSinceStart += Time.deltaTime;
 
@@ -139,15 +162,58 @@ public class CarController : MonoBehaviour
             Debug.DrawLine(r.origin, hit.point, Color.red);
         }
 
+        saveData(aSensor, bSensor, cSensor, getOverallFitness());
+
     }
 
+    // save training data from model
+    public void saveData(float aSensor, float bSensor, float cSensor, float overallFitness)
+    {
+            var newLine = string.Format("{0},{1},{2},{3}", aSensor, bSensor, cSensor, overallFitness);
+            csv.AppendLine(newLine);
+
+            File.WriteAllText(@"C:\DEV\saveTrainingData\trainingData.csv", csv.ToString());
+    }
+
+    public static float[] readData()
+    {
+        float[] xy;
+        string path = @"C:\DEV\saveTrainingData\trainingData.csv";
+        string[] lines = System.IO.File.ReadAllLines(path);
+        //Console.WriteLine(lines.GetValue(0).ToString());
+        //var value = lines.GetValue(0).ToString();
+        //string[] xvalue = value.Split(',');
+        //xy = float.Parse(value.Split(','));
+        //Console.WriteLine(xvalue[0]);
+        try
+        {
+           var value = lines.GetValue(i).ToString();
+           string[] xvalue = value.Split(',');
+            xy = new float[] {float.Parse(xvalue[0]), float.Parse(xvalue[1]) };
+            //Console.WriteLine(xy[0]);
+            //xy = float.Parse(value.Split(','));
+      
+        }
+        catch (IndexOutOfRangeException e)
+        {
+        }
+        finally
+        {
+            xy = new float[] { 0f, 0f };
+        }
+
+        i++;
+        return xy;
+    }
     private Vector3 inp;
-    public void MoveCar (float v, float h) {
+    public void MoveCar (float v, float h, float time) {
         inp = Vector3.Lerp(Vector3.zero,new Vector3(0,0,v*11.4f),0.02f);
         inp = transform.TransformDirection(inp);
         transform.position += inp;
 
         transform.eulerAngles += new Vector3(0, (h*90)*0.02f,0);
+
+        //saveData(v, h, time);
     }
 
     public int genCount()
@@ -155,5 +221,9 @@ public class CarController : MonoBehaviour
         return generationCount;
     }
 
+    public float getOverallFitness()
+    {
+        return overallFitness;
+    }
 
 }
