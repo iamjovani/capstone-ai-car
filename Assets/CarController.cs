@@ -28,7 +28,7 @@ public class CarController : MonoBehaviour
 
     [Header("Generation Count")]
     public int generationCount = 0;
-    public Text genText;
+
 
     [Header("Network Options")]
     public int LAYERS = 3;
@@ -48,10 +48,8 @@ public class CarController : MonoBehaviour
     private void Awake() {
         startPosition = transform.position;
         startRotation = transform.eulerAngles;
-        genText.text = generationCount.ToString("0");
+        //genText.text = generationCount.ToString("0");
         network = GetComponent<NNet>();
-
-
 
         //training Data
         //(a, t) = network.RunNetwork(aSensor, bSensor, cSensor);

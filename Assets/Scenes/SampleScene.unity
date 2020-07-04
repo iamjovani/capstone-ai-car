@@ -2986,7 +2986,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 571891452}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -2995,7 +2995,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -125, y: 157}
+  m_AnchoredPosition: {x: -127.7, y: 156.6}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &571891454
@@ -3048,9 +3048,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 571891452}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7fdc92509ecaee4b8b03333d0a5a6fa, type: 3}
+  m_Script: {fileID: 11500000, guid: 69cc835b3601e26429886e73b3c081db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  genCount: {fileID: 571891452}
+  jeep: {fileID: 1117306684}
+  genCountVal: 1
 --- !u!1 &581418465
 GameObject:
   m_ObjectHideFlags: 0
@@ -5055,7 +5058,6 @@ MonoBehaviour:
   avgSpeedMultiplier: 0.2
   sensorMultiplier: 0.1
   generationCount: 0
-  genText: {fileID: 571891454}
   LAYERS: 3
   NEURONS: 30
 --- !u!54 &1117306686
