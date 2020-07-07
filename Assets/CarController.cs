@@ -45,16 +45,12 @@ public class CarController : MonoBehaviour
     public static int i = 0;
 
 
-    private void Awake() {
+    private void Awake() 
+    {
         startPosition = transform.position;
         startRotation = transform.eulerAngles;
         //genText.text = generationCount.ToString("0");
         network = GetComponent<NNet>();
-
-        //training Data
-        //(a, t) = network.RunNetwork(aSensor, bSensor, cSensor);
-
-        
     }
 
     public void ResetWithNetwork (NNet net)
@@ -75,6 +71,20 @@ public class CarController : MonoBehaviour
         transform.position = startPosition;
         generationCount += 1; // add value to  TextUI 
         transform.eulerAngles = startRotation;
+
+        /*
+        string path = @"C:\DEV\saveTrainingData\trainingData.csv";
+
+            // Calling the ReadAllLines() function 
+            string[] readText = File.ReadAllLines(path);
+
+            foreach (string s in readText)
+            {
+               
+             String[] arr = s.Split(',');
+             (a, t) = network.RunNetwork(float.Parse(arr[0]), float.Parse(arr[0]), float.Parse(arr[0]));
+            }
+        */
     }
 
     private void OnCollisionEnter (Collision collision) {
@@ -89,13 +99,7 @@ public class CarController : MonoBehaviour
 
         (a, t) = network.RunNetwork(aSensor, bSensor, cSensor);
 
-       // float[] xy = readData();
-//
-       // if (xy[0] != 0 && xy[1] != 0)
-       // {
-       //     a = xy[0];
-       //     t = xy[1];
-       // }
+     
       
 
         MoveCar(a,t, timeSinceStart);
@@ -103,10 +107,6 @@ public class CarController : MonoBehaviour
         timeSinceStart += Time.deltaTime;
 
         CalculateFitness();
-
-        //a = 0;
-        //t = 0;
-
 
     }
 
@@ -173,36 +173,7 @@ public class CarController : MonoBehaviour
             File.WriteAllText(@"C:\DEV\saveTrainingData\trainingData.csv", csv.ToString());
     }
 
-    public static float[] readData()
-    {
-        float[] xy;
-        string path = @"C:\DEV\saveTrainingData\trainingData.csv";
-        string[] lines = System.IO.File.ReadAllLines(path);
-        //Console.WriteLine(lines.GetValue(0).ToString());
-        //var value = lines.GetValue(0).ToString();
-        //string[] xvalue = value.Split(',');
-        //xy = float.Parse(value.Split(','));
-        //Console.WriteLine(xvalue[0]);
-        try
-        {
-           var value = lines.GetValue(i).ToString();
-           string[] xvalue = value.Split(',');
-            xy = new float[] {float.Parse(xvalue[0]), float.Parse(xvalue[1]) };
-            //Console.WriteLine(xy[0]);
-            //xy = float.Parse(value.Split(','));
-      
-        }
-        catch (IndexOutOfRangeException e)
-        {
-        }
-        finally
-        {
-            xy = new float[] { 0f, 0f };
-        }
-
-        i++;
-        return xy;
-    }
+    
     private Vector3 inp;
     public void MoveCar (float v, float h, float time) {
         inp = Vector3.Lerp(Vector3.zero,new Vector3(0,0,v*11.4f),0.02f);
