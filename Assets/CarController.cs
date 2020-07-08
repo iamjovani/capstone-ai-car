@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using System;
 using System.IO;
 using System.Text;
+using System.Diagnostics;
 
 [RequireComponent(typeof(NNet))]
 public class CarController : MonoBehaviour
@@ -59,7 +60,9 @@ public class CarController : MonoBehaviour
         Reset();
     }
 
-    
+
+
+
 
     public void Reset() {
 
@@ -138,26 +141,30 @@ public class CarController : MonoBehaviour
         Vector3 b = (transform.forward);
         Vector3 c = (transform.forward-transform.right);
 
+       
+
+
+
         Ray r = new Ray(transform.position,a);
         RaycastHit hit;
 
         if (Physics.Raycast(r, out hit)) {
             aSensor = hit.distance/20;
-            Debug.DrawLine(r.origin, hit.point, Color.red);
+            UnityEngine.Debug.DrawLine(r.origin, hit.point, Color.red);
         }
 
         r.direction = b;
 
         if (Physics.Raycast(r, out hit)) {
             bSensor = hit.distance/20;
-            Debug.DrawLine(r.origin, hit.point, Color.red);
+            UnityEngine.Debug.DrawLine(r.origin, hit.point, Color.green);
         }
 
         r.direction = c;
 
         if (Physics.Raycast(r, out hit)) {
             cSensor = hit.distance/20;
-            Debug.DrawLine(r.origin, hit.point, Color.red);
+            UnityEngine.Debug.DrawLine(r.origin, hit.point, Color.red);
         }
 
         saveData(aSensor, bSensor, cSensor, getOverallFitness());

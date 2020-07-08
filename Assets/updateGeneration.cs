@@ -25,7 +25,7 @@ public class updateGeneration : MonoBehaviour
 
         genCount.GetComponent<Text>().text = genCountVal.ToString("0");
 
-
+        /*Fitness function text update*/
         //------------------------------------------------------------------
         CarController genFitnessValtemp = jeep.GetComponent<CarController>();
         genFitnessVal = genFitnessValtemp.overallFitness;
