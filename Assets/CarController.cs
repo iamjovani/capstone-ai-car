@@ -46,6 +46,11 @@ public class CarController : MonoBehaviour
     public static int i = 0;
 
 
+
+    public float forwardForce = 2000f;
+    public float sidewaysForce = 100f;
+
+
     private void Awake() 
     {
         startPosition = transform.position;
@@ -183,6 +188,32 @@ public class CarController : MonoBehaviour
     
     private Vector3 inp;
     public void MoveCar (float v, float h, float time) {
+
+
+       
+        if (Input.GetKey("d"))
+        {
+            h = (sidewaysForce * Time.fixedDeltaTime);
+        }
+
+        if (Input.GetKey("a"))
+        {
+            h = (-sidewaysForce * Time.fixedDeltaTime);
+        }
+
+
+        if (Input.GetKey("w"))
+        {
+            v = (sidewaysForce * Time.fixedDeltaTime);
+        }
+
+        if (Input.GetKey("s"))
+        {
+            v = (-sidewaysForce * Time.fixedDeltaTime);
+        }
+
+
+
         inp = Vector3.Lerp(Vector3.zero,new Vector3(0,0,v*11.4f),0.02f);
         inp = transform.TransformDirection(inp);
         transform.position += inp;
